@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Sags</title>
+  </head>
+  <body>
+    <div
+      class="header flex justify-between items-center h-[80px] bg-sky-400 w-full">
+      <div class="logo ml-20 font-bold">LOGO</div>
+      <div class="menu mr-20">
+        <a href="./index.html" class="mr-10 font-bold size-[18px]">Нүүр</a>
+        <a href="./second.html" class="mr-10 font-bold size-[18px]">Нэмэх</a>
+        <a href="" class="mr-10 font-bold size-[18px]">Сагс</a>
+      </div>
+    </div>
+
+    <div class="container mx-auto p-6">
+      <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
+        Saved Products
+      </h1>
+      <div
+        id="savedProductsContainer"
+        class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+    </div>
+
+    <script>
+      const savedProducts =
+        JSON.parse(localStorage.getItem("savedProducts")) || [];
+
+      const savedProductsContainer = document.getElementById(
+        "savedProductsContainer"
+      );
+
+      savedProducts.forEach((product) => {
+        const productCard = `
+        <div class="bg-white rounded-lg shadow-md p-4">
+          <img src="${product.imgSrc}" alt="${product.title}" class="w-full h-40 object-cover rounded-t-md">
+          <div class="p-4">
+            <h3 class="text-xl font-bold text-gray-800 mb-2">${product.title}</h3>
+            <p class="text-lg font-semibold text-gray-800 mb-4">${product.price}</p>
+            <button 
+              class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+              onclick="removeProduct('${product.title}')">
+              Remove
+            </button>
+          </div>
+        </div>
+      `;
+        savedProductsContainer.insertAdjacentHTML("beforeend", productCard);
+      });
+
+      function removeProduct(title) {
+        const updatedProducts = savedProducts.filter(
+          (product) => product.title !== title
+        );
+        localStorage.setItem("savedProducts", JSON.stringify(updatedProducts));
+        location.reload();
+      }
+    </script>
+  </body>
+</html>
